@@ -134,6 +134,459 @@
             max-width: 100%;
             height: auto;
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+            max-height: 120px; /* Ajusta según necesidad */
+            object-fit: contain;
+        }
+        
+        /* Efectos de vidrio */
+        .glass-effect {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Estilo para el RIF */
+        .rif-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        /* Optimizaciones para móviles */
+        @media (max-width: 640px) {
+            .mobile-text-sm { font-size: 0.8rem; }
+            .mobile-text-xs { font-size: 0.7rem; }
+            .mobile-p-4 { padding: 1rem; }
+            .mobile-p-3 { padding: 0.75rem; }
+            .mobile-text-4xl { font-size: 2.5rem; }
+            .mobile-text-3xl { font-size: 2rem; }
+            .mobile-text-2xl { font-size: 1.75rem; }
+            .mobile-text-xl { font-size: 1.5rem; }
+            .mobile-text-lg { font-size: 1.25rem; }
+            .mobile-space-y-4 > * + * { margin-top: 1rem; }
+            .logo-img {
+                max-height: 80px; /* Más pequeño en móviles */
+            }
+        }
+        
+        /* Optimizaciones para tablets */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .tablet-text-lg { font-size: 1.125rem; }
+            .tablet-text-xl { font-size: 1.5rem; }
+            .tablet-p-6 { padding: 1.5rem; }
+        }
+        
+        /* Evitar zoom en inputs en iOS */
+        @supports (-webkit-touch-callout: none) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8">
+    <div class="w-full max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-2 sm:px-4">
+        <!-- Logo y Encabezado -->
+        <div class="text-center mb-4 sm:mb-6 md:mb-8">
+            <!-- Logo real -->
+            <div class="logo-container">
+                <img src="logo_pieles.png" alt="Pieles Europa" class="logo-img">
+            </div>
+            
+            <p class="text-white/80 text-xs sm:text-sm mt-2 sm:mt-3 uppercase tracking-[0.15em] sm:tracking-[0.2em] font-light">Calculadora Profesional de Cuero</p>
+            <div class="mt-2 sm:mt-4 text-xs text-white/70 glass-effect rounded-lg p-2 sm:p-3">
+                <i class="fas fa-info-circle mr-1 text-white"></i> 
+                <span class="mobile-text-xs sm:text-xs">Calcula la cantidad exacta de cuero necesaria para tu proyecto</span>
+            </div>
+        </div>
+
+        <!-- Tarjeta principal -->
+        <div class="card rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
+            <!-- Selector de modo -->
+            <div class="mb-6 sm:mb-8">
+                <label class="block text-sm font-medium mb-2 sm:mb-3 text-white/90">
+                    <i class="fas fa-exchange-alt mr-2 text-white"></i>
+                    <span class="mobile-text-sm sm:text-sm">¿Qué quieres convertir?</span>
+                </label>
+                <div class="relative">
+                    <select id="calcMode" class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-3.5 text-white input-focus outline-none appearance-none cursor-pointer text-sm sm:text-base">
+                        <option value="lineal">Metros Lineales (Sintético) a Cuero</option>
+                        <option value="m2">Metros Cuadrados (m²) a Cuero</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <i class="fas fa-chevron-down text-white/60"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campo de entrada -->
+            <div class="space-y-4 sm:space-y-6">
+                <div>
+                    <label id="inputLabel" class="block text-sm font-medium mb-1 sm:mb-2 text-white/90">
+                        <i class="fas fa-ruler-combined mr-2 text-white"></i>
+                        <span class="mobile-text-sm sm:text-sm">Cantidad en Metros Lineales:</span>
+                    </label>
+                    <div class="relative">
+                        <input type="number" id="inputValue" placeholder="Ej: 5" 
+                               class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-4 text-xl sm:text-2xl font-semibold text-white input-focus outline-none transition-all pl-10 sm:pl-12">
+                        <div class="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-white">
+                            <i class="fas fa-tape text-lg sm:text-xl"></i>
+                        </div>
+                        <div class="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-white/60 text-sm sm:text-base">
+                            <span id="unitDisplay">m</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-1 sm:mt-2">
+                        <p id="helperText" class="text-xs text-white/60 italic mobile-text-xs">Basado en ancho estándar de 1.40m.</p>
+                        <button id="clearBtn" class="text-xs text-white/60 hover:text-white transition-colors mobile-text-xs" onclick="clearInput()">
+                            <i class="fas fa-times mr-1"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Opciones adicionales -->
+                <div class="glass-effect rounded-lg sm:rounded-xl p-3 sm:p-4">
+                    <div class="flex items-center justify-between mb-3 sm:mb-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="margin" class="w-4 h-4 sm:w-5 sm:h-5 text-white mr-2 sm:mr-3" style="accent-color: #ffffff;">
+                            <label for="margin" class="text-sm text-white/90 cursor-pointer mobile-text-sm sm:text-sm">
+                                Añadir 10% de margen de seguridad
+                                <span class="text-white ml-1">*</span>
+                            </label>
+                        </div>
+                        <div class="text-xs text-white bg-white/20 px-2 py-1 rounded-full mobile-text-xs">
+                            Recomendado
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <label class="text-sm text-white/90 mobile-text-sm sm:text-sm">Mostrar también en m²</label>
+                        <label class="switch">
+                            <input type="checkbox" id="showM2" onchange="toggleM2Display()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Botón de calcular -->
+                <button onclick="calculate()" class="w-full bg-primary-gradient text-black font-bold py-3 sm:py-4 rounded-lg sm:rounded-xl hover:opacity-90 transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2 sm:gap-3 pulse text-sm sm:text-base">
+                    <i class="fas fa-calculator"></i>
+                    <span>CALCULAR PIES²</span>
+                </button>
+            </div>
+
+            <!-- Resultados -->
+            <div id="resultContainer" class="hidden mt-6 sm:mt-8 p-4 sm:p-6 glass-effect border border-white/20 rounded-lg sm:rounded-xl result-animation">
+                <div class="text-center">
+                    <p class="text-white/80 text-xs sm:text-sm uppercase tracking-widest mb-1">
+                        <i class="fas fa-bullseye mr-2 text-white"></i>
+                        <span class="mobile-text-xs sm:text-sm">Necesitas aproximadamente</span>
+                    </p>
+                    <h2 id="resultValue" class="text-4xl sm:text-5xl font-bold text-white my-2 sm:my-3 mobile-text-4xl">0</h2>
+                    <p class="text-white font-semibold tracking-widest mb-2 mobile-text-lg sm:text-lg">PIES CUADRADOS</p>
+                    
+                    <!-- Resultado adicional en m² -->
+                    <div id="m2ResultContainer" class="hidden bg-black/30 rounded-lg p-2 sm:p-3 mt-3 sm:mt-4 mb-4 sm:mb-6 border border-white/10">
+                        <p class="text-white/70 text-xs sm:text-sm mb-1">Equivalente en metros cuadrados:</p>
+                        <p id="m2ResultValue" class="text-lg sm:text-xl font-bold text-white mobile-text-xl">0 m²</p>
+                    </div>
+                    
+                    <div class="text-xs text-white/70 bg-black/30 p-2 sm:p-3 rounded-lg mb-4 sm:mb-6 border border-white/10">
+                        <div class="flex items-center justify-center gap-3 sm:gap-4">
+                            <div class="text-center">
+                                <div class="text-white font-bold mobile-text-sm sm:text-sm">1m²</div>
+                                <div class="text-white/70 mobile-text-xs">= 10.763 pies²</div>
+                            </div>
+                            <div class="h-6 sm:h-8 w-px bg-white/20"></div>
+                            <div class="text-center">
+                                <div class="text-white font-bold mobile-text-sm sm:text-sm">1m lineal</div>
+                                <div class="text-white/70 mobile-text-xs">= 17 pies²</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-white/10 mb-4 sm:mb-6">
+                    
+                    <div class="space-y-3 sm:space-y-4">
+                        <button onclick="sendWhatsApp()" class="w-full whatsapp-btn text-white font-bold py-2.5 sm:py-3.5 px-4 rounded-lg sm:rounded-xl flex items-center justify-center gap-2 sm:gap-3 hover:opacity-90 transition-all text-sm sm:text-base">
+                            <i class="fab fa-whatsapp text-lg sm:text-xl"></i>
+                            <span>Pedir Cotización vía WhatsApp</span>
+                        </button>
+                        
+                        <button onclick="copyResult()" class="w-full bg-white/10 text-white font-medium py-2 sm:py-3 px-4 rounded-lg sm:rounded-xl flex items-center justify-center gap-2 sm:gap-3 hover:bg-white/20 transition-all border border-white/20 text-sm sm:text-base">
+                            <i class="far fa-copy"></i>
+                            <span>Copiar Resultado</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie de página con RIF y ubicación actualizada -->
+        <div class="mt-6 sm:mt-8 text-center text-xs text-white/60 uppercase tracking-widest leading-relaxed">
+            <p class="mb-2 mobile-text-xs sm:text-xs px-2">© Pieles Europa - RIF: J-50246299-6 - Herramienta de Cálculo Profesional</p>
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-1 sm:space-y-0 sm:space-x-3 text-[10px] sm:text-[10px] px-2">
+                <span><i class="fas fa-phone-alt mr-1"></i> 424-137-2682</span>
+                <span class="hidden sm:inline">•</span>
+                <span><i class="fas fa-map-marker-alt mr-1"></i> Caracas, Venezuela</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="copyModal" class="fixed inset-0 flex items-center justify-center bg-black/70 z-50 hidden p-4">
+        <div class="bg-black/80 rounded-xl p-4 sm:p-6 w-full max-w-sm mx-4 text-center border border-white/20 backdrop-blur-md">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 border border-green-800/30">
+                <i class="fas fa-check text-green-300 text-lg sm:text-xl"></i>
+            </div>
+            <h3 class="text-base sm:text-lg font-bold text-white mb-2">¡Resultado copiado!</h3>
+            <p class="text-white/70 mb-3 sm:mb-4 text-sm">El resultado ha sido copiado al portapapeles.</p>
+            <button onclick="closeModal()" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-4 sm:px-6 rounded-lg transition-colors border border-white/20 text-sm sm:text-base">
+                Aceptar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Tu número configurado correctamente
+        const TU_NUMERO = "584241372682"; 
+        let lastResult = 0;
+        
+        // Inicializar la calculadora
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('inputValue').focus();
+            // Calcular automáticamente si hay un valor por defecto
+            if (document.getElementById('inputValue').value) {
+                calculate();
+            }
+        });
+        
+        function switchMode() {
+            const mode = document.getElementById('calcMode').value;
+            const label = document.getElementById('inputLabel');
+            const helper = document.getElementById('helperText');
+            const unitDisplay = document.getElementById('unitDisplay');
+            
+            if (mode === 'lineal') {
+                label.innerHTML = '<i class="fas fa-ruler-combined mr-2 text-white"></i> <span class="mobile-text-sm sm:text-sm">Cantidad en Metros Lineales:</span>';
+                helper.innerText = 'Equivalencia: 1m lineal = 17 pies² (ancho estándar 1.40m).';
+                unitDisplay.innerText = 'm';
+            } else {
+                label.innerHTML = '<i class="fas fa-border-all mr-2 text-white"></i> <span class="mobile-text-sm sm:text-sm">Cantidad en Metros Cuadrados (m²):</span>';
+                helper.innerText = 'Conversión: 1m² = 10.763 pies².';
+                unitDisplay.innerText = 'm²';
+            }
+            document.getElementById('resultContainer').classList.add('hidden');
+        }
+        
+        function clearInput() {
+            document.getElementById('inputValue').value = '';
+            document.getElementById('inputValue').focus();
+            document.getElementById('resultContainer').classList.add('hidden');
+        }
+        
+        function calculate() {
+            const mode = document.getElementById('calcMode').value;
+            const value = parseFloat(document.getElementById('inputValue').value);
+            const hasMargin = document.getElementById('margin').checked;
+            
+            if (isNaN(value) || value <= 0) {
+                showError("Por favor ingresa un número válido mayor que 0");
+                return;
+            }
+            
+            // Validar que no sea un número demasiado grande
+            if (value > 10000) {
+                showError("Por favor ingresa un valor más pequeño (máximo 10,000)");
+                return;
+            }
+            
+            let result = (mode === 'lineal') ? value * 17 : value * 10.763;
+            if (hasMargin) result *= 1.10;
+            
+            // Guardar resultado para uso posterior
+            lastResult = result;
+            
+            // Mostrar resultado principal
+            document.getElementById('resultValue').innerText = result.toFixed(2);
+            document.getElementById('resultContainer').classList.remove('hidden');
+            
+            // Mostrar resultado en m² si está activado
+            if (document.getElementById('showM2').checked) {
+                const m2Result = (mode === 'lineal') ? value * 1.4 : value;
+                document.getElementById('m2ResultValue').innerText = m2Result.toFixed(2) + ' m²';
+                document.getElementById('m2ResultContainer').classList.remove('hidden');
+            } else {
+                document.getElementById('m2ResultContainer').classList.add('hidden');
+            }
+            
+            // Desplazar la vista al resultado si es necesario
+            document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function toggleM2Display() {
+            const showM2 = document.getElementById('showM2').checked;
+            const m2Container = document.getElementById('m2ResultContainer');
+            
+            if (showM2 && !m2Container.classList.contains('hidden')) {
+                // Si el contenedor de resultados está visible, actualizar el valor m²
+                const mode = document.getElementById('calcMode').value;
+                const value = parseFloat(document.getElementById('inputValue').value);
+                
+                if (!isNaN(value) && value > 0) {
+                    const m2Result = (mode === 'lineal') ? value * 1.4 : value;
+                    document.getElementById('m2ResultValue').innerText = m2Result.toFixed(2) + ' m²';
+                }
+            }
+        }
+        
+        function sendWhatsApp() {
+            const pies = document.getElementById('resultValue').innerText;
+            const modeName = document.getElementById('calcMode').options[document.getElementById('calcMode').selectedIndex].text;
+            const original = document.getElementById('inputValue').value;
+            const hasMargin = document.getElementById('margin').checked ? 'Sí' : 'No';
+            
+            const mensaje = `¡Hola Pieles Europa! 👋\n\n` +
+                            `He usado su calculadora web y necesito una cotización:\n\n` +
+                            `*📐 Datos del cálculo:*\n` +
+                            `- Tipo de conversión: ${modeName}\n` +
+                            `- Cantidad ingresada: ${original}\n` +
+                            `- Margen de seguridad (10%): ${hasMargin}\n` +
+                            `- *Total calculado: ${pies} Pies²*\n\n` +
+                            `¿Podrían indicarme disponibilidad y precio para este metraje?\n\n` +
+                            `*¡Gracias!* 🎯`;
+            
+            const url = `https://wa.me/${TU_NUMERO}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+        
+        function copyResult() {
+            const resultText = `Resultado de Pieles Europa: ${lastResult.toFixed(2)} pies²`;
+            
+            // Usar la API del portapapeles moderna
+            navigator.clipboard.writeText(resultText).then(function() {
+                showModal();
+            }).catch(function(err) {
+                // Fallback para navegadores más antiguos
+                const textArea = document.createElement("textarea");
+                textArea.value = resultText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                showModal();
+            });
+        }
+        
+        function showModal() {
+            document.getElementById('copyModal').classList.remove('hidden');
+            setTimeout(closeModal, 2000);
+        }
+        
+        function closeModal() {
+            document.getElementById('copyModal').classList.add('hidden');
+        }
+        
+        function showError(message) {
+            // Podría implementarse un sistema de notificaciones más elegante
+            alert(message);
+            document.getElementById('inputValue').focus();
+            document.getElementById('inputValue').select();
+        }
+        
+        // Permitir calcular con la tecla Enter
+        document.getElementById('inputValue').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculate();
+            }
+        });
+        
+        // Inicializar el modo
+        switchMode();
+    </script>
+</body>
+</html>        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Estilo para el logo */
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.2em;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Switch personalizado */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #ffffff;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #555;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        /* Estilo para el botón de WhatsApp */
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        /* Contenedor del logo */
+        .logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
         }
         
         /* Efectos de vidrio */
