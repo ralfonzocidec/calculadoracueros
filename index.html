@@ -210,7 +210,7 @@
 
         <!-- Tarjeta principal -->
         <div class="card rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
-            <!-- Selector de Línea de Cuero (único selector) -->
+            <!-- Selector de Línea de Cuero -->
             <div class="mb-6 sm:mb-8">
                 <label class="block text-sm font-medium mb-2 sm:mb-3 text-white/90">
                     <i class="fas fa-tag mr-2 text-white"></i>
@@ -268,22 +268,8 @@
                            class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-3.5 text-white input-focus outline-none transition-all text-sm sm:text-base">
                 </div>
 
-                <!-- Opciones adicionales -->
+                <!-- Opción: Mostrar también en m² -->
                 <div class="glass-effect rounded-lg sm:rounded-xl p-3 sm:p-4">
-                    <div class="flex items-center justify-between mb-3 sm:mb-4">
-                        <div class="flex items-center">
-                            <!-- CHECKBOX CORREGIDO: más grande y con color vino -->
-                            <input type="checkbox" id="margin" class="w-5 h-5 sm:w-5 sm:h-5 mr-2 sm:mr-3" style="accent-color: #810A2D;">
-                            <label for="margin" class="text-sm text-white/90 cursor-pointer mobile-text-sm sm:text-sm">
-                                Añadir 10% de margen de seguridad
-                                <span class="text-white ml-1">*</span>
-                            </label>
-                        </div>
-                        <div class="text-xs text-white bg-white/20 px-2 py-1 rounded-full mobile-text-xs">
-                            Recomendado
-                        </div>
-                    </div>
-                    
                     <div class="flex items-center justify-between">
                         <label class="text-sm text-white/90 mobile-text-sm sm:text-sm">Mostrar también en m²</label>
                         <label class="switch">
@@ -293,10 +279,10 @@
                     </div>
                 </div>
 
-                <!-- Mensaje informativo en negrita -->
+                <!-- Mensaje informativo -->
                 <div class="info-message">
                     <i class="fas fa-info-circle mr-2 text-white"></i>
-                    <span class="font-bold text-white">Vendemos a partir de media piel (25 pies² aprox.)</span>
+                    <span class="font-bold text-white">Vendemos a partir de media piel (25 pies aprox.)</span>
                 </div>
 
                 <!-- Botón de calcular -->
@@ -316,7 +302,7 @@
                     <h2 id="resultValue" class="text-4xl sm:text-5xl font-bold text-white my-2 sm:my-3 mobile-text-4xl">0</h2>
                     <p class="text-white font-semibold tracking-widest mb-2 mobile-text-lg sm:text-lg">PIES CUADRADOS</p>
                     
-                    <!-- Resultado adicional en m² (solo si se activa) -->
+                    <!-- Resultado adicional en m² -->
                     <div id="m2ResultContainer" class="hidden bg-black/30 rounded-lg p-2 sm:p-3 mt-3 sm:mt-4 mb-4 sm:mb-6 border border-white/10">
                         <p class="text-white/70 text-xs sm:text-sm mb-1">Valor ingresado en metros cuadrados:</p>
                         <p id="m2ResultValue" class="text-lg sm:text-xl font-bold text-white mobile-text-xl">0 m²</p>
@@ -348,7 +334,7 @@
             </div>
         </div>
 
-        <!-- Pie de página con RIF y ubicación actualizada -->
+        <!-- Pie de página -->
         <div class="mt-6 sm:mt-8 text-center text-xs text-white/60 uppercase tracking-widest leading-relaxed">
             <p class="mb-2 mobile-text-xs sm:text-xs px-2">© Pieles Europa - RIF: J-50246299-6 - Herramienta de Cálculo Profesional</p>
             <div class="flex flex-col sm:flex-row justify-center items-center space-y-1 sm:space-y-0 sm:space-x-3 text-[10px] sm:text-[10px] px-2">
@@ -389,11 +375,11 @@
         console.log('%c© PIELES EUROPA - Código Propietario', 'font-size: 14px; color: #810A2D; font-weight: bold;');
         console.log('RIF: J-50246299-6 - Queda prohibida la reproducción total o parcial.');
         
-        // Tu número configurado correctamente
+        // Número de WhatsApp
         const TU_NUMERO = "584241372682"; 
         let lastResult = 0;
         
-        // Inicializar la calculadora
+        // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('inputValue').focus();
             if (document.getElementById('inputValue').value) {
@@ -409,7 +395,6 @@
         
         function calculate() {
             const value = parseFloat(document.getElementById('inputValue').value);
-            const hasMargin = document.getElementById('margin').checked;
             
             if (isNaN(value) || value <= 0) {
                 showError("Por favor ingresa un número válido mayor que 0");
@@ -421,16 +406,13 @@
                 return;
             }
             
-            // Conversión directa: 1 m² = 17 pies²
+            // Conversión: 1 m² = 17 pies²
             let result = value * 17;
-            if (hasMargin) result *= 1.10;
-            
             lastResult = result;
             
             document.getElementById('resultValue').innerText = result.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
             
-            // Mostrar el valor ingresado en m² si está activado
             if (document.getElementById('showM2').checked) {
                 document.getElementById('m2ResultValue').innerText = value.toFixed(2) + ' m²';
                 document.getElementById('m2ResultContainer').classList.remove('hidden');
@@ -456,7 +438,6 @@
         function sendWhatsApp() {
             const pies = document.getElementById('resultValue').innerText;
             const original = document.getElementById('inputValue').value;
-            const hasMargin = document.getElementById('margin').checked ? 'Sí' : 'No';
             const lineaCuero = document.getElementById('cueroLinea').value;
             const proyecto = document.getElementById('projectDesc').value;
             
@@ -465,7 +446,6 @@
                             `*📐 Datos del cálculo:*\n` +
                             `- Línea de cuero: ${lineaCuero}\n` +
                             `- Metros cuadrados ingresados: ${original} m²\n` +
-                            `- Margen de seguridad (10%): ${hasMargin}\n` +
                             `- *Total calculado: ${pies} Pies²*\n\n` +
                             `*📝 Descripción del proyecto:*\n${proyecto || "No especificada"}\n\n` +
                             `¿Podrían indicarme disponibilidad y precio para este metraje?\n\n` +
