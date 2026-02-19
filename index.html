@@ -138,11 +138,16 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* Estilo para el RIF */
-        .rif-text {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            letter-spacing: 1px;
+        /* Estilo para el mensaje informativo */
+        .info-message {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #ffffff;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+            backdrop-filter: blur(5px);
         }
         
         /* Optimizaciones para móviles */
@@ -212,7 +217,7 @@
                 </div>
             </div>
 
-            <!-- Nueva sección: Línea de Cuero -->
+            <!-- Selector de Línea de Cuero -->
             <div class="mb-6 sm:mb-8">
                 <label class="block text-sm font-medium mb-2 sm:mb-3 text-white/90">
                     <i class="fas fa-tag mr-2 text-white"></i>
@@ -260,6 +265,16 @@
                     </div>
                 </div>
 
+                <!-- NUEVO CAMPO: Describe tu proyecto -->
+                <div>
+                    <label for="projectDesc" class="block text-sm font-medium mb-1 sm:mb-2 text-white/90">
+                        <i class="fas fa-pencil-alt mr-2 text-white"></i>
+                        <span class="mobile-text-sm sm:text-sm">Describe tu proyecto</span>
+                    </label>
+                    <input type="text" id="projectDesc" placeholder="Ej: 2 butacas de auto" 
+                           class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-3.5 text-white input-focus outline-none transition-all text-sm sm:text-base">
+                </div>
+
                 <!-- Opciones adicionales -->
                 <div class="glass-effect rounded-lg sm:rounded-xl p-3 sm:p-4">
                     <div class="flex items-center justify-between mb-3 sm:mb-4">
@@ -282,6 +297,12 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+                </div>
+
+                <!-- Mensaje informativo en negrita -->
+                <div class="info-message">
+                    <i class="fas fa-info-circle mr-2 text-white"></i>
+                    <span class="font-bold text-white">Vendemos a partir de media piel (25 pies aprox.)</span>
                 </div>
 
                 <!-- Botón de calcular -->
@@ -454,7 +475,8 @@
             const modeName = document.getElementById('calcMode').options[document.getElementById('calcMode').selectedIndex].text;
             const original = document.getElementById('inputValue').value;
             const hasMargin = document.getElementById('margin').checked ? 'Sí' : 'No';
-            const lineaCuero = document.getElementById('cueroLinea').value; // Nueva línea
+            const lineaCuero = document.getElementById('cueroLinea').value;
+            const proyecto = document.getElementById('projectDesc').value; // Nuevo campo
             
             const mensaje = `¡Hola Pieles Europa! 👋\n\n` +
                             `He usado su calculadora web y necesito una cotización:\n\n` +
@@ -464,6 +486,7 @@
                             `- Cantidad ingresada: ${original}\n` +
                             `- Margen de seguridad (10%): ${hasMargin}\n` +
                             `- *Total calculado: ${pies} Pies²*\n\n` +
+                            `*📝 Descripción del proyecto:*\n${proyecto || "No especificada"}\n\n` +
                             `¿Podrían indicarme disponibilidad y precio para este metraje?\n\n` +
                             `*¡Gracias!* 🎯`;
             
@@ -511,5 +534,4 @@
         switchMode();
     </script>
 </body>
-</html>
 </html>
