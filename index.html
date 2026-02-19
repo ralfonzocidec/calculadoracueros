@@ -210,28 +210,11 @@
 
         <!-- Tarjeta principal -->
         <div class="card rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
-            <!-- Selector de modo -->
-            <div class="mb-6 sm:mb-8">
-                <label class="block text-sm font-medium mb-2 sm:mb-3 text-white/90">
-                    <i class="fas fa-exchange-alt mr-2 text-white"></i>
-                    <span class="mobile-text-sm sm:text-sm">¿Qué quieres convertir?</span>
-                </label>
-                <div class="relative">
-                    <select id="calcMode" class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-3.5 text-white input-focus outline-none appearance-none cursor-pointer text-sm sm:text-base">
-                        <option value="lineal">Metros Lineales (Sintético) a Cuero</option>
-                        <option value="m2">Metros Cuadrados (m²) a Cuero</option>
-                    </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <i class="fas fa-chevron-down text-white/60"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Selector de Línea de Cuero -->
+            <!-- Selector de Línea de Cuero (único selector) -->
             <div class="mb-6 sm:mb-8">
                 <label class="block text-sm font-medium mb-2 sm:mb-3 text-white/90">
                     <i class="fas fa-tag mr-2 text-white"></i>
-                    <span class="mobile-text-sm sm:text-sm">Línea de cuero</span>
+                    <span class="mobile-text-sm sm:text-sm">Escoge una línea de cueros</span>
                 </label>
                 <div class="relative">
                     <select id="cueroLinea" class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-3.5 text-white input-focus outline-none appearance-none cursor-pointer text-sm sm:text-base">
@@ -250,32 +233,32 @@
                 </div>
             </div>
 
-            <!-- Campo de entrada -->
+            <!-- Campo de entrada (metros cuadrados) -->
             <div class="space-y-4 sm:space-y-6">
                 <div>
                     <label id="inputLabel" class="block text-sm font-medium mb-1 sm:mb-2 text-white/90">
-                        <i class="fas fa-ruler-combined mr-2 text-white"></i>
-                        <span class="mobile-text-sm sm:text-sm">Cantidad en Metros Lineales:</span>
+                        <i class="fas fa-border-all mr-2 text-white"></i>
+                        <span class="mobile-text-sm sm:text-sm">Cantidad en Metros Cuadrados (m²):</span>
                     </label>
                     <div class="relative">
                         <input type="number" id="inputValue" placeholder="Ej: 5" 
                                class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-4 text-xl sm:text-2xl font-semibold text-white input-focus outline-none transition-all pl-10 sm:pl-12">
                         <div class="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-white">
-                            <i class="fas fa-tape text-lg sm:text-xl"></i>
+                            <i class="fas fa-vector-square text-lg sm:text-xl"></i>
                         </div>
                         <div class="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-white/60 text-sm sm:text-base">
-                            <span id="unitDisplay">m</span>
+                            <span id="unitDisplay">m²</span>
                         </div>
                     </div>
                     <div class="flex items-center justify-between mt-1 sm:mt-2">
-                        <p id="helperText" class="text-xs text-white/60 italic mobile-text-xs">Basado en ancho estándar de 1.40m.</p>
+                        <p id="helperText" class="text-xs text-white/60 italic mobile-text-xs">Conversión: 1m² = 17 pies².</p>
                         <button id="clearBtn" class="text-xs text-white/60 hover:text-white transition-colors mobile-text-xs" onclick="clearInput()">
                             <i class="fas fa-times mr-1"></i> Limpiar
                         </button>
                     </div>
                 </div>
 
-                <!-- NUEVO CAMPO: Describe tu proyecto -->
+                <!-- Campo: Describe tu proyecto -->
                 <div>
                     <label for="projectDesc" class="block text-sm font-medium mb-1 sm:mb-2 text-white/90">
                         <i class="fas fa-pencil-alt mr-2 text-white"></i>
@@ -333,9 +316,9 @@
                     <h2 id="resultValue" class="text-4xl sm:text-5xl font-bold text-white my-2 sm:my-3 mobile-text-4xl">0</h2>
                     <p class="text-white font-semibold tracking-widest mb-2 mobile-text-lg sm:text-lg">PIES CUADRADOS</p>
                     
-                    <!-- Resultado adicional en m² -->
+                    <!-- Resultado adicional en m² (solo si se activa) -->
                     <div id="m2ResultContainer" class="hidden bg-black/30 rounded-lg p-2 sm:p-3 mt-3 sm:mt-4 mb-4 sm:mb-6 border border-white/10">
-                        <p class="text-white/70 text-xs sm:text-sm mb-1">Equivalente en metros cuadrados:</p>
+                        <p class="text-white/70 text-xs sm:text-sm mb-1">Valor ingresado en metros cuadrados:</p>
                         <p id="m2ResultValue" class="text-lg sm:text-xl font-bold text-white mobile-text-xl">0 m²</p>
                     </div>
                     
@@ -343,11 +326,6 @@
                         <div class="flex items-center justify-center gap-3 sm:gap-4">
                             <div class="text-center">
                                 <div class="text-white font-bold mobile-text-sm sm:text-sm">1m²</div>
-                                <div class="text-white/70 mobile-text-xs">= 10.763 pies²</div>
-                            </div>
-                            <div class="h-6 sm:h-8 w-px bg-white/20"></div>
-                            <div class="text-center">
-                                <div class="text-white font-bold mobile-text-sm sm:text-sm">1m lineal</div>
                                 <div class="text-white/70 mobile-text-xs">= 17 pies²</div>
                             </div>
                         </div>
@@ -423,24 +401,6 @@
             }
         });
         
-        function switchMode() {
-            const mode = document.getElementById('calcMode').value;
-            const label = document.getElementById('inputLabel');
-            const helper = document.getElementById('helperText');
-            const unitDisplay = document.getElementById('unitDisplay');
-            
-            if (mode === 'lineal') {
-                label.innerHTML = '<i class="fas fa-ruler-combined mr-2 text-white"></i> <span class="mobile-text-sm sm:text-sm">Cantidad en Metros Lineales:</span>';
-                helper.innerText = 'Equivalencia: 1m lineal = 17 pies² (ancho estándar 1.40m).';
-                unitDisplay.innerText = 'm';
-            } else {
-                label.innerHTML = '<i class="fas fa-border-all mr-2 text-white"></i> <span class="mobile-text-sm sm:text-sm">Cantidad en Metros Cuadrados (m²):</span>';
-                helper.innerText = 'Conversión: 1m² = 10.763 pies².';
-                unitDisplay.innerText = 'm²';
-            }
-            document.getElementById('resultContainer').classList.add('hidden');
-        }
-        
         function clearInput() {
             document.getElementById('inputValue').value = '';
             document.getElementById('inputValue').focus();
@@ -448,7 +408,6 @@
         }
         
         function calculate() {
-            const mode = document.getElementById('calcMode').value;
             const value = parseFloat(document.getElementById('inputValue').value);
             const hasMargin = document.getElementById('margin').checked;
             
@@ -462,7 +421,8 @@
                 return;
             }
             
-            let result = (mode === 'lineal') ? value * 17 : value * 10.763;
+            // Conversión directa: 1 m² = 17 pies²
+            let result = value * 17;
             if (hasMargin) result *= 1.10;
             
             lastResult = result;
@@ -470,9 +430,9 @@
             document.getElementById('resultValue').innerText = result.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
             
+            // Mostrar el valor ingresado en m² si está activado
             if (document.getElementById('showM2').checked) {
-                const m2Result = (mode === 'lineal') ? value * 1.4 : value;
-                document.getElementById('m2ResultValue').innerText = m2Result.toFixed(2) + ' m²';
+                document.getElementById('m2ResultValue').innerText = value.toFixed(2) + ' m²';
                 document.getElementById('m2ResultContainer').classList.remove('hidden');
             } else {
                 document.getElementById('m2ResultContainer').classList.add('hidden');
@@ -486,19 +446,15 @@
             const m2Container = document.getElementById('m2ResultContainer');
             
             if (showM2 && !m2Container.classList.contains('hidden')) {
-                const mode = document.getElementById('calcMode').value;
                 const value = parseFloat(document.getElementById('inputValue').value);
-                
                 if (!isNaN(value) && value > 0) {
-                    const m2Result = (mode === 'lineal') ? value * 1.4 : value;
-                    document.getElementById('m2ResultValue').innerText = m2Result.toFixed(2) + ' m²';
+                    document.getElementById('m2ResultValue').innerText = value.toFixed(2) + ' m²';
                 }
             }
         }
         
         function sendWhatsApp() {
             const pies = document.getElementById('resultValue').innerText;
-            const modeName = document.getElementById('calcMode').options[document.getElementById('calcMode').selectedIndex].text;
             const original = document.getElementById('inputValue').value;
             const hasMargin = document.getElementById('margin').checked ? 'Sí' : 'No';
             const lineaCuero = document.getElementById('cueroLinea').value;
@@ -508,8 +464,7 @@
                             `He usado su calculadora web y necesito una cotización:\n\n` +
                             `*📐 Datos del cálculo:*\n` +
                             `- Línea de cuero: ${lineaCuero}\n` +
-                            `- Tipo de conversión: ${modeName}\n` +
-                            `- Cantidad ingresada: ${original}\n` +
+                            `- Metros cuadrados ingresados: ${original} m²\n` +
                             `- Margen de seguridad (10%): ${hasMargin}\n` +
                             `- *Total calculado: ${pies} Pies²*\n\n` +
                             `*📝 Descripción del proyecto:*\n${proyecto || "No especificada"}\n\n` +
@@ -556,8 +511,6 @@
                 calculate();
             }
         });
-        
-        switchMode();
     </script>
 </body>
 </html>
