@@ -63,13 +63,6 @@
             100% { transform: scale(1); }
         }
         
-        /* Estilo para el logo */
-        .logo-text {
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 0.2em;
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
-        }
-        
         /* Switch personalizado */
         .switch {
             position: relative;
@@ -134,7 +127,7 @@
             max-width: 100%;
             height: auto;
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
-            max-height: 120px; /* Ajusta según necesidad */
+            max-height: 120px;
             object-fit: contain;
         }
         
@@ -165,7 +158,7 @@
             .mobile-text-lg { font-size: 1.25rem; }
             .mobile-space-y-4 > * + * { margin-top: 1rem; }
             .logo-img {
-                max-height: 80px; /* Más pequeño en móviles */
+                max-height: 80px;
             }
         }
         
@@ -212,6 +205,29 @@
                     <select id="calcMode" class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-3.5 text-white input-focus outline-none appearance-none cursor-pointer text-sm sm:text-base">
                         <option value="lineal">Metros Lineales (Sintético) a Cuero</option>
                         <option value="m2">Metros Cuadrados (m²) a Cuero</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <i class="fas fa-chevron-down text-white/60"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nueva sección: Línea de Cuero -->
+            <div class="mb-6 sm:mb-8">
+                <label class="block text-sm font-medium mb-2 sm:mb-3 text-white/90">
+                    <i class="fas fa-tag mr-2 text-white"></i>
+                    <span class="mobile-text-sm sm:text-sm">Línea de cuero</span>
+                </label>
+                <div class="relative">
+                    <select id="cueroLinea" class="w-full bg-black/40 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-3.5 text-white input-focus outline-none appearance-none cursor-pointer text-sm sm:text-base">
+                        <option value="Uruguay">Uruguay</option>
+                        <option value="Italianos LENA">Italianos LENA</option>
+                        <option value="Auto Speed">Auto Speed</option>
+                        <option value="Bravo">Bravo</option>
+                        <option value="Matte">Matte</option>
+                        <option value="Cueros Grabados">Cueros Grabados</option>
+                        <option value="Cueros con Pelo">Cueros con Pelo</option>
+                        <option value="Serigrafías">Serigrafías</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <i class="fas fa-chevron-down text-white/60"></i>
@@ -355,7 +371,6 @@
         // Inicializar la calculadora
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('inputValue').focus();
-            // Calcular automáticamente si hay un valor por defecto
             if (document.getElementById('inputValue').value) {
                 calculate();
             }
@@ -395,7 +410,6 @@
                 return;
             }
             
-            // Validar que no sea un número demasiado grande
             if (value > 10000) {
                 showError("Por favor ingresa un valor más pequeño (máximo 10,000)");
                 return;
@@ -404,14 +418,11 @@
             let result = (mode === 'lineal') ? value * 17 : value * 10.763;
             if (hasMargin) result *= 1.10;
             
-            // Guardar resultado para uso posterior
             lastResult = result;
             
-            // Mostrar resultado principal
             document.getElementById('resultValue').innerText = result.toFixed(2);
             document.getElementById('resultContainer').classList.remove('hidden');
             
-            // Mostrar resultado en m² si está activado
             if (document.getElementById('showM2').checked) {
                 const m2Result = (mode === 'lineal') ? value * 1.4 : value;
                 document.getElementById('m2ResultValue').innerText = m2Result.toFixed(2) + ' m²';
@@ -420,7 +431,6 @@
                 document.getElementById('m2ResultContainer').classList.add('hidden');
             }
             
-            // Desplazar la vista al resultado si es necesario
             document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
         
@@ -429,7 +439,6 @@
             const m2Container = document.getElementById('m2ResultContainer');
             
             if (showM2 && !m2Container.classList.contains('hidden')) {
-                // Si el contenedor de resultados está visible, actualizar el valor m²
                 const mode = document.getElementById('calcMode').value;
                 const value = parseFloat(document.getElementById('inputValue').value);
                 
@@ -445,10 +454,12 @@
             const modeName = document.getElementById('calcMode').options[document.getElementById('calcMode').selectedIndex].text;
             const original = document.getElementById('inputValue').value;
             const hasMargin = document.getElementById('margin').checked ? 'Sí' : 'No';
+            const lineaCuero = document.getElementById('cueroLinea').value; // Nueva línea
             
             const mensaje = `¡Hola Pieles Europa! 👋\n\n` +
                             `He usado su calculadora web y necesito una cotización:\n\n` +
                             `*📐 Datos del cálculo:*\n` +
+                            `- Línea de cuero: ${lineaCuero}\n` +
                             `- Tipo de conversión: ${modeName}\n` +
                             `- Cantidad ingresada: ${original}\n` +
                             `- Margen de seguridad (10%): ${hasMargin}\n` +
@@ -463,11 +474,9 @@
         function copyResult() {
             const resultText = `Resultado de Pieles Europa: ${lastResult.toFixed(2)} pies²`;
             
-            // Usar la API del portapapeles moderna
             navigator.clipboard.writeText(resultText).then(function() {
                 showModal();
             }).catch(function(err) {
-                // Fallback para navegadores más antiguos
                 const textArea = document.createElement("textarea");
                 textArea.value = resultText;
                 document.body.appendChild(textArea);
@@ -488,21 +497,19 @@
         }
         
         function showError(message) {
-            // Podría implementarse un sistema de notificaciones más elegante
             alert(message);
             document.getElementById('inputValue').focus();
             document.getElementById('inputValue').select();
         }
         
-        // Permitir calcular con la tecla Enter
         document.getElementById('inputValue').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 calculate();
             }
         });
         
-        // Inicializar el modo
         switchMode();
     </script>
 </body>
+</html>
 </html>
